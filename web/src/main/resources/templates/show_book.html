@@ -1,0 +1,35 @@
+<html>
+<body>
+    <a href="/">Back</a>
+    
+    <h1>{{book.title}}</h1>
+    <p><b>Summary:</b> {{book.summary}}</p>
+    <p><b>Author:</b> {{book.author}}</p>
+    <p><b>Publisher:</b> {{book.publisher}}</p>
+    <p><b>Date:</b> {{book.date}}</p>
+    
+    <h3>Comments</h3>
+    {{#book.comments}}
+    <p><b>{{user}}</b>: {{rating}} [0 - 5] <a href="/book/{{bookId}}/comments/{{id}}/delete">Delete</a> </p>
+    <p>{{text}}</p>
+	{{/book.comments}}
+    {{^book.comments}}
+    <p>No comments yet.</p>
+    {{/book.comments}}
+    
+    <h3>New comment</h3>
+    <form action="/book/{{book.id}}/comments" method="post" name="comment">
+        User name: <input type='text' name='user'/>
+        <br>
+        Comment: <textarea name='text' rows=3 cols=40></textarea>
+        <br>
+        Rating: <input type='number' name='rating' min="0" max="5"/>
+        <br><br>
+        <input type='submit' value='Add comment'/>
+	</form>
+    
+    <br><br>
+	<a href="/book/{{book.id}}/delete">Delete book</a>
+	<br>
+</body>
+</html>
