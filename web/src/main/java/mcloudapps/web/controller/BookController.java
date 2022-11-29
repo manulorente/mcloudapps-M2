@@ -25,7 +25,7 @@ public class BookController {
     @PostMapping("/create")
     public String createBook(Model model, Book book) {
         bookService.save(book);
-        return "saved_book";
+        return "redirect:/";
     }
 
     @GetMapping("/book/{bookId}")
@@ -37,19 +37,19 @@ public class BookController {
     @GetMapping("/book/{bookId}/delete")
     public String deleteBook(Model model, @PathVariable("bookId") Long bookId) {
         bookService.deleteById(bookId);
-        return "deleted_book";
+        return "redirect:/";
     }
 
     @PostMapping("/book/{bookId}/comments")
     public String createComment(Model model, @PathVariable("bookId") Long bookId, String text, String user, Long rating) {
         bookService.addComment(bookId, text, user, rating);
-        return "saved_comment";
+        return "redirect:/book/" + bookId;
     }
 
     @GetMapping("/book/{bookId}/comments/{commentId}/delete")
     public String deleteComment(Model model, @PathVariable("bookId") Long bookId, @PathVariable("commentId") Long commentId) {
         bookService.deleteComment(bookId, commentId);
-        return "deleted_comment";
+        return "redirect:/book/" + bookId;
     }
 
 }
