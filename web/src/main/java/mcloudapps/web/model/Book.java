@@ -1,7 +1,9 @@
 package mcloudapps.web.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class Book {
 
@@ -11,7 +13,7 @@ public class Book {
     private String author;
     private String publisher;
     private String date;
-    private List<Comment> comments = new ArrayList<>();
+	private ConcurrentMap<Long, Comment> comments = new ConcurrentHashMap<>();
 
     public Book() {
     }
@@ -73,13 +75,13 @@ public class Book {
         this.date = date;
     }
 
-    public void addComent(Comment comment) {
-        this.comments.add(comment);
-    }
-
-    public List<Comment> getComments() {
-        return this.comments;
-    }
+	public Map<Long, Comment> getCommentsMap() {
+		return this.comments;
+	}
+	
+	public Collection<Comment> getComments() {
+		return this.comments.values();
+	}
 
     @Override
     public String toString() {
@@ -87,25 +89,4 @@ public class Book {
                 + publisher + ", date=" + date + "]";
     }
 
-    @Override
-    public boolean equals(Object obj){
-        if (obj == null) {
-            return false;
-        }
-        if (!Book.class.isAssignableFrom(obj.getClass())) {
-            return false;
-        }
-        final Book other = (Book) obj;
-        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
 }

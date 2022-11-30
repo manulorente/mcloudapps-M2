@@ -5,18 +5,18 @@ public class Comment {
     private Long id;
     private Long bookId;
     private String text;
-    private String user;
+    private String userName;
     private Long rating;
 
     public Comment() {
     }
 
-    public Comment(Long id ,Long bookId, String text, String user, Long rating) {
+    public Comment(Long id ,Long bookId, String text, String userName, Long rating) {
         super();
         this.id = id;
         this.bookId = bookId;
         this.text = text;
-        this.user = user;
+        this.userName = userName;
         this.rating = rating;
     }
 
@@ -44,12 +44,12 @@ public class Comment {
         this.text = text;
     }
 
-    public String getUser() {
-        return user;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Long getRating() {
@@ -62,46 +62,8 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comment [bookId=" + bookId + ", id=" + id + ", rating=" + rating + ", text=" + text + ", user=" + user
+        return "Comment [bookId=" + bookId + ", id=" + id + ", rating=" + rating + ", text=" + text + ", userName=" + userName
                 + "]";
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((bookId == null) ? 0 : bookId.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((rating == null) ? 0 : rating.hashCode());
-        result = prime * result + ((text == null) ? 0 : text.hashCode());
-        result = prime * result + ((user == null) ? 0 : user.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Comment other = (Comment) obj;
-        if (rating == null) {
-            if (other.rating != null)
-                return false;
-        } else if (!rating.equals(other.rating))
-            return false;
-        if (text == null) {
-            if (other.text != null)
-                return false;
-        } else if (!text.equals(other.text))
-            return false;
-        if (user == null) {
-            if (other.user != null)
-                return false;
-        } else if (!user.equals(other.user))
-            return false;
-        return true;
-    }
 }

@@ -34,7 +34,7 @@
         </tr>
         {{#book.comments}}
         <tr>
-            <td>{{user}}</td>
+            <td>{{userName}}</td>
             <td>{{rating}}</td>
             <td>{{text}}</td>
             <td><a href="/book/{{bookId}}/comments/{{id}}/delete"><button>Delete comment</button></a></td>
@@ -48,19 +48,25 @@
     </table>
 
     <h2>New comment</h2>
-    <form action="/book/{{book.id}}/comments" method="post" name="comment">
+    <form action="/book/{{book.id}}/comment/new" method="post">
         <table style="text-align: left">
             <tr>
-                <th>User</th>
-                <td><input type="text" name="user"/></td>
+                {{#userName}}
+                    <th>User</th>
+                    <td><input type="text" name="userName" value='{{.}}' required/></td>
+                {{/userName}}
+                {{^userName}}
+                    <th>User</th>
+                    <td><input type="text" name="userName" required/></td>
+                {{/userName}}
             </tr>
             <tr>
                 <th>Rating</th>
-                <td><input type="number" name="rating" min="0" max="5" /></td>
+                <td><input type="number" min="0" max="5" name="rating" required/></td>
             </tr>
             <tr>
                 <th>Text</th>
-                <td><textarea name="text" rows=3 cols=40></textarea></td>
+                <td><textarea rows=5 cols=40 name="text"></textarea></td>
             </tr>
             <tr>
                 <td colspan="2"><input type="submit" value="Add comment" /></td>
