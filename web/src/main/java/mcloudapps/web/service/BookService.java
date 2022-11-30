@@ -14,8 +14,8 @@ import mcloudapps.web.model.Comment;
 @Service
 public class BookService {
 
-    private static AtomicLong nextBookId = new AtomicLong();
-    private static AtomicLong nextCommentId = new AtomicLong();
+    private AtomicLong nextBookId = new AtomicLong();
+    private AtomicLong nextCommentId = new AtomicLong();
     private final ConcurrentMap<Long, Book> books = new ConcurrentHashMap<>();
 
     public BookService(){
@@ -61,14 +61,14 @@ public class BookService {
         this.books.remove(id);
     }
 
-    public void addComment(Long bookId, String text, String user, Long rating) {
-        Book book = this.books.get(bookId);
-        book.addComent(new Comment(nextCommentId.getAndIncrement(), bookId, text, user, rating));
+    public void addComment(Long bookId, Comment comment) {
+        Long id = this.nextCommentId.getAndIncrement();
+        comment.setId(id);
+        this.books.get(bookId).getCommentsMap().put(id, comment);
     }
 
     public void deleteComment(Long bookId, Long commentId) {
-        Book book = this.books.get(bookId);
-        book.getComments().removeIf(comment -> comment.getId().equals(commentId));
+        this.books.get(bookId).getCommentsMap().remove(commentId);
     }
     
 }
