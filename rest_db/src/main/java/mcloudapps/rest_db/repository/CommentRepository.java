@@ -1,18 +1,11 @@
 package mcloudapps.rest_db.repository;
 
-import java.util.Collection;
-
 import mcloudapps.rest_db.model.Comment;
 
-public interface CommentRepository {
-    
-    Collection<Comment> findByBookId(long bookId);
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    Comment findById(long id);
-    
-    Comment save(Comment comment);
-
-    Comment deleteById(long id);
-
-
+public interface CommentRepository extends JpaRepository<Comment, Long>{
+    Page<Comment> findAll(Pageable pageable);
 }
