@@ -1,10 +1,12 @@
 package mcloudapps.rest_db.repository;
 
-public interface BookRepository {
-    
-    Collection<Book> findAll();
+import org.springframework.data.domain.Page;
 
-    Book save(Book book);
+import mcloudapps.rest_db.model.Book;
 
-    Collection<Book> findById(long id);
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookRepository extends JpaRepository<Book, Long>{
+    Page<Book> findAll(Pageable pageable);
 }
