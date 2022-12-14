@@ -1,0 +1,18 @@
+type EoloPlant {
+    id: ID!
+    city: String!
+    planning: String
+}
+
+input EoloPlantInput {
+    city: String!
+}
+
+type Query {
+    eoloPlants: [EoloPlant]! 
+}
+
+type Mutation {
+    createEoloPlant(eoloPlant: EoloPlantInput) : EoloPlant!
+    deleteEoloPlant(id: ID): EoloPlant!
+}
