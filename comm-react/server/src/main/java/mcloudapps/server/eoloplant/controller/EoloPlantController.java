@@ -30,12 +30,12 @@ public class EoloPlantController {
     }
 
     @MutationMapping
-    public EoloPlant creaEoloPlant(@Argument String name) throws JsonProcessingException {
-        return this.eoloPlantService.save(new EoloPlant(name));
+    public EoloPlant createEoloPlant(@Argument EoloPlant eoloPlant) throws JsonProcessingException {
+        return this.eoloPlantService.save(eoloPlant);
     }
 
     @MutationMapping
-    public void deleteEoloPlant(@Argument Long id) {
+    public void deleteEoloPlant(@Argument Long id) throws JsonProcessingException {
         this.eoloPlantService.deleteById(id);
     }
     

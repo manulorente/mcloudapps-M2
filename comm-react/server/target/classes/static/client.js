@@ -15,7 +15,7 @@ async function createPlant() {
   }`;
 
   const response = await graphql(query, { eoloPlant: { city }});
-
+  
   const plant = await response.data.createEoloPlant;
 
   console.log(JSON.stringify(plant));

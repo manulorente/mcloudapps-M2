@@ -14,11 +14,14 @@ public class SampleDataInitializer {
 
     @PostConstruct
     public void init() {
-        EoloPlant eoloPlant = new EoloPlant("Roma");
+        EoloPlant eoloPlant = new EoloPlant("Madrid");
+        eoloPlant.setPlanning("madrid-sunny-flat");
         this.eoloPlantRepository.save(eoloPlant);
 
-        eoloPlant = new EoloPlant("Milano");
+        eoloPlant = new EoloPlant("Sevilla");
+        eoloPlant.setPlanning("sevilla-sunny-flat");
         this.eoloPlantRepository.save(eoloPlant);
+
     }
     
 }
