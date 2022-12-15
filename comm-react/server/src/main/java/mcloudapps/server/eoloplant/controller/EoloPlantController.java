@@ -1,6 +1,7 @@
 package mcloudapps.server.eoloplant.controller;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -30,7 +31,7 @@ public class EoloPlantController {
     }
 
     @MutationMapping
-    public EoloPlant createEoloPlant(@Argument EoloPlant eoloPlant) throws JsonProcessingException {
+    public EoloPlant createEoloPlant(@Argument EoloPlant eoloPlant) throws JsonProcessingException, InterruptedException, ExecutionException {
         return this.eoloPlantService.save(eoloPlant);
     }
 

@@ -1,27 +1,27 @@
 package mcloudapps;
 
+import java.time.Duration;
+import java.util.Random;
+
 import io.quarkus.grpc.GrpcService;
 
 import io.smallrye.mutiny.Uni;
+
+import mcloudapps.planner.grpc.WeatherResponse;
+import mcloudapps.planner.grpc.WeatherService;
+import mcloudapps.planner.grpc.WeatherRequest;
 
 @GrpcService
 public class WeatherGrpcService implements WeatherService {
 
     @Override
     public Uni<WeatherResponse> getWeather(WeatherRequest request) {
-        System.out.println("Received request from " + request);
-        String weatherType = startWithVowel(request.getCity()) ? "Rainny" : "Sunny";
-
-        WeatherResponse response = WeatherResponse.newBuilder()
-                .setCity(request.getCity())
-                .setWeather(weatherType)
-                .build();
         
-        return Uni.createFrom().item(response);
-    }
+        String city = request.getCity();
 
-    private boolean startWithVowel(String city) {
-        return city.toLowerCase().startsWith("a") || city.toLowerCase().startsWith("e") || city.toLowerCase().startsWith("i")
-                || city.toLowerCase().startsWith("o") || city.toLowerCase().startsWith("u");
+        String weather = city.matches("^[aeiou].*") ? "Rainy" : "Sunny";
+
+        return Uni.createFrom().item(WeatherResponse.newBuilder().setWeather(weather).setCity(city).build())
+                .onItem().delayIt().by(Duration.ofMillis(1000 + new Random().nextInt(2000)));
     }
 }
