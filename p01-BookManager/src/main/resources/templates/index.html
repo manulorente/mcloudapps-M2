@@ -1,0 +1,20 @@
+<html>
+<body>
+	<h1>Books</h1>
+	<table>
+	{{#books}}
+		<tr>
+			<td><a href="/book/{{id}}">{{title}}</a></td>
+		</tr>
+	{{/books}}
+	{{^books}}
+		<tr>
+			<td>No books yet.</td>
+		</tr>
+	{{/books}}
+	<tr>
+		<td><a href="new_book.html"><button>New Book</button></a></td>
+	</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<html>
+<body>
+    <a href="/">Back</a>
+    <h1>{{book.title}}</h1>
+    <table style="text-align: left">
+        <tr>
+            <th >Author</th>
+            <td>{{book.author}}</td>
+        </tr>
+        <tr>
+            <th>Publisher</th>
+            <td>{{book.publisher}}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{book.date}}</td>
+        </tr>        
+        <tr>
+            <th>Summary</th>
+            <td>{{book.summary}}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><a href="/book/{{book.id}}/delete"><button>Delete book</button></a></td>
+        </tr>
+    </table>
+    
+    <h2>Comments</h2>
+    <table style="text-align: center">
+        <tr>
+            <th>Author</th>
+            <th>Rating [0-5]</th>
+            <th>Text</th>
+            <th></th>
+        </tr>
+        {{#book.comments}}
+        <tr>
+            <td>{{userName}}</td>
+            <td>{{rating}}</td>
+            <td>{{text}}</td>
+            <td><a href="/book/{{bookId}}/comments/{{id}}/delete"><button>Delete comment</button></a></td>
+        </tr>        
+        {{/book.comments}}
+        {{^book.comments}}
+        <tr>
+            <td colspan="4">No comments yet.</td>
+        </tr>
+        {{/book.comments}}
+    </table>
+
+    <h2>New comment</h2>
+    <form action="/book/{{book.id}}/comment/new" method="post">
+        <table style="text-align: left">
+            <tr>
+                {{#userName}}
+                    <th>User</th>
+                    <td><input type="text" name="userName" value='{{.}}' required/></td>
+                {{/userName}}
+                {{^userName}}
+                    <th>User</th>
+                    <td><input type="text" name="userName" required/></td>
+                {{/userName}}
+            </tr>
+            <tr>
+                <th>Rating</th>
+                <td><input type="number" min="0" max="5" name="rating" required/></td>
+            </tr>
+            <tr>
+                <th>Text</th>
+                <td><textarea rows=5 cols=40 name="text"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Add comment" /></td>
+            </tr>
+        </table>
+	</form>
+</body>
+</html>
