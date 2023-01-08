@@ -1,33 +1,13 @@
-package mcloudapps.server.eoloplant.model;
+package mcloudapps.planner.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
 public class EoloPlant {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    
     private Long id;
 
     private String city;
     private int progress;
     private boolean completed;
     private String planning;
-
-    public EoloPlant() {
-    }
-
-    public EoloPlant(String city) {
-        this.city = city;
-    }
-
-    public EoloPlant(String city, String planning) {
-        this.city = city;
-        this.planning = planning;
-    }
 
     public Long getId() {
         return id;

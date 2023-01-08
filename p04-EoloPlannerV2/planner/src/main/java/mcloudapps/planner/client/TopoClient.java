@@ -1,4 +1,4 @@
-package mcloudapps.server.eoloplant.client;
+package mcloudapps.planner.client;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;

@@ -1,4 +1,4 @@
-package mcloudapps.server.eoloplant.client;
+package mcloudapps.planner.client;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;

@@ -1,16 +1,15 @@
 package mcloudapps.server.eoloplant.service;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.cloud.stream.function.StreamBridge;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks.Many;
 
-import mcloudapps.server.eoloplant.client.TopoClient;
-import mcloudapps.server.eoloplant.client.WeatherClient;
 import mcloudapps.server.eoloplant.model.EoloPlant;
 import mcloudapps.server.eoloplant.repository.EoloPlantRepository;
 
@@ -18,25 +17,35 @@ import mcloudapps.server.eoloplant.repository.EoloPlantRepository;
 public class EoloPlantService {
 
     @Autowired
+    private Flux<EoloPlant> eoloPlantEvents;
+
+    @Autowired
+  	private Many<EoloPlant> eoloPlantSink;
+
+    @Autowired
+    private StreamBridge streamBridge;
+
+    @Autowired
     private EoloPlantRepository eoloPlants;
-
-    @Autowired
-    private WeatherClient weatherClient;
-
-    @Autowired
-    private TopoClient topoClient;
 
     public List<EoloPlant> findAll() {
         return this.eoloPlants.findAll();
     }
 
-    public EoloPlant createEoloPlant(EoloPlant eoloPlant) throws JsonProcessingException, InterruptedException, ExecutionException {
-        String city = eoloPlant.getCity();
-        CompletableFuture<String> weather = getWeather(city);
-        CompletableFuture<String> landscape = getTopography(city);
-        CompletableFuture.allOf(weather, landscape).get();
-        eoloPlant.setPlanning(city + "-" + weather.get() + "-" + landscape.get());
-        return this.eoloPlants.save(eoloPlant);
+    public EoloPlant create(EoloPlant eoloPlant){
+        this.eoloPlants.save(eoloPlant);
+        this.eoloPlantEvents.subscribe(e -> {
+            System.out.println("EoloPlant: " + e);
+            this.eoloPlantSink.tryEmitNext(e);
+        });
+        this.streamBridge.send("create", eoloPlant);
+        return eoloPlant;
+    }
+
+    public EoloPlant update(EoloPlant eoloPlant) {
+        this.eoloPlants.save(eoloPlant);
+        this.eoloPlantSink.tryEmitNext(eoloPlant);
+        return eoloPlant;
     }
 
     public EoloPlant findById(Long id) {
@@ -47,20 +56,12 @@ public class EoloPlantService {
     public EoloPlant deleteById(Long id) {
         EoloPlant eoloPlant = this.findById(id);
         this.eoloPlants.delete(eoloPlant);
+        this.eoloPlantSink.tryEmitNext(eoloPlant);
         return eoloPlant;
     }
 
-    private CompletableFuture<String> getWeather(String city) throws InterruptedException, ExecutionException {
-        return this.weatherClient.getWeather(city).thenApply(w -> {
-            System.out.println("Weather: " + w);
-            return w;
-        });
-    }
-
-    private CompletableFuture<String> getTopography(String city) throws JsonProcessingException {
-        return this.topoClient.getTopography(city).thenApply(t -> {
-            System.out.println("Topography: " + t);
-            return t;
-        });
+    public Flux<EoloPlant> subscriptionEoloPlant(Long id) {
+        return eoloPlantEvents
+            .filter(e -> Objects.equals(e.getId(), id));
     }
 }

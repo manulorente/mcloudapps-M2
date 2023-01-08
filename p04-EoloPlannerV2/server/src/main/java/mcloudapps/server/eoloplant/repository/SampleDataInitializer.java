@@ -3,7 +3,7 @@ package mcloudapps.server.eoloplant.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import mcloudapps.server.eoloplant.model.EoloPlant;
 
 @Component
@@ -14,9 +14,18 @@ public class SampleDataInitializer {
 
     @PostConstruct
     public void init() {
-        this.eoloPlants.save(new EoloPlant("Madrid", "madrid-sunny-flat"));
-        this.eoloPlants.save(new EoloPlant("Barcelona", "barcelona-sunny-mountain"));
-        this.eoloPlants.save(new EoloPlant("Valencia", "valencia-sunny-flat"));
+        EoloPlant eoloPlant = new EoloPlant("Madrid", "madrid-sunny-flat");
+        eoloPlant.setCompleted(true);
+        eoloPlant.setProgress(100);
+        this.eoloPlants.save(eoloPlant);
+        eoloPlant = new EoloPlant("Barcelona", "barcelona-sunny-flat");
+        eoloPlant.setCompleted(true);
+        eoloPlant.setProgress(100);
+        this.eoloPlants.save(eoloPlant);
+        eoloPlant = new EoloPlant("Valencia", "valencia-sunny-flat");
+        eoloPlant.setCompleted(true);
+        eoloPlant.setProgress(100);
+        this.eoloPlants.save(eoloPlant);
     }
     
 }
