@@ -1,3 +1,16 @@
+type EoloPlant {
+    id: ID!
+    city: String!
+    progress: Int
+    completed: Boolean    
+    planning: String!
+}
+
+input EoloPlantInput {
+    id: ID
+    city: String!
+    planning: String
+}
 
 type Query {
     eoloPlants: [EoloPlant!]! 
@@ -6,16 +19,11 @@ type Query {
 
 type Mutation {
     createEoloPlant(eoloPlant: EoloPlantInput): EoloPlant
+    updateEoloPlant(eoloPlant: EoloPlantInput!): EoloPlant
     deleteEoloPlant(id: ID!): EoloPlant
 }
 
-type EoloPlant {
-    id: ID!
-    city: String!
-    planning: String!
+type Subscription {
+    subscriptionEoloPlants: [EoloPlant]
+    subscriptionEoloPlant(id: ID): EoloPlant
 }
-
-input EoloPlantInput {
-    city: String!
-}
-

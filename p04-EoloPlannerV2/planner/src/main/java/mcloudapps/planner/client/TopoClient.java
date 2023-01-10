@@ -1,4 +1,4 @@
-package mcloudapps.server.eoloplant.client;
+package mcloudapps.planner.client;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -21,7 +21,6 @@ public class TopoClient {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://"+TOPO_HOST+":"+TOPO_PORT+"/api/v1/topographicdetails/" + city;
         String response = restTemplate.getForObject(url, String.class);
-        Map<String,Object> map = new ObjectMapper().readValue(response, Map.class);
-        return CompletableFuture.completedFuture(map.get("landscape").toString());
+        return CompletableFuture.completedFuture(new ObjectMapper().readValue(response, Map.class).get("landscape").toString());
     }
 }
