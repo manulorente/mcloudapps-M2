@@ -1,14 +1,10 @@
 # Getting started
 
-## Place your local directory into the project folder
+## Generate services production files with Maven  
 
-## Generate Server, TopoService and WeatherService production files with Maven
+### Change directory to each service folder and run below command  
 
- `mvnw -X clean`  
- `mvnw -X compile`  
- `mvnw -X package` (SpringBoot)  
- or  
- `mvnw -X install` (Quarkus)
+ `mvnw -X package`
 
 ## Run databases services with Docker  
 

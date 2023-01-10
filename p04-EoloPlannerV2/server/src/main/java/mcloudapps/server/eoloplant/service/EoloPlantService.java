@@ -1,5 +1,6 @@
 package mcloudapps.server.eoloplant.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,9 +22,6 @@ import mcloudapps.server.ws.WebSocketHandler;
 public class EoloPlantService {
 
     @Autowired
-    private WebSocketHandler webSocketHandler;
-
-    @Autowired
     private Flux<EoloPlant> eoloPlantEvents;
 
     @Autowired
@@ -32,6 +30,9 @@ public class EoloPlantService {
     @Autowired
     private StreamBridge streamBridge;
 
+	@Autowired
+	private WebSocketHandler webSocketHandler;
+
     @Autowired
     private EoloPlantRepository eoloPlants;
 
@@ -39,15 +40,15 @@ public class EoloPlantService {
         return this.eoloPlants.findAll();
     }
 
-    public EoloPlant create(EoloPlant eoloPlant) throws JsonProcessingException{
+    public EoloPlant create(EoloPlant eoloPlant) throws IOException{
         this.eoloPlants.save(eoloPlant);
-        System.out.println("EoloPlant: " + eoloPlant.getCity());
         this.eoloPlantSink.tryEmitNext(eoloPlant);
         this.sendEoloPlant(eoloPlant);
         return eoloPlant;
     }
 
-    public EoloPlant update(EoloPlant eoloPlant) {
+    public EoloPlant update(EoloPlant eoloPlant) throws IOException {
+        this.webSocketHandler.sendMessage(eoloPlant);
         this.eoloPlants.save(eoloPlant);
         this.eoloPlantSink.tryEmitNext(eoloPlant);
         return eoloPlant;

@@ -5,6 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 @Entity
 public class EoloPlant {
 
@@ -66,6 +70,14 @@ public class EoloPlant {
 
     public void setPlanning(String planning) {
         this.planning = planning;
+    }
+
+    public String toJson() throws JsonProcessingException {
+        return new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValueAsString(this);
+    }
+
+    public static EoloPlant fromJson(String json) throws Exception {
+        return new ObjectMapper().readValue(json, EoloPlant.class);
     }
 
     @Override

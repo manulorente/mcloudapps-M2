@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+import java.io.IOException;
 import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,16 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@Bean
-	public Consumer<EoloPlant> progressconsumer() {
-		return eoloPlant -> {
-			System.out.println("Progress: " + eoloPlant.getCity() + " " + eoloPlant.getProgress());
-			this.eoloPlantService.update(eoloPlant);
-		};
-	}
+    @Bean
+    Consumer<EoloPlant> progressconsumer() {
+        return eoloPlant -> {
+            System.out.println("Progress: " + eoloPlant.getCity() + " " + eoloPlant.getProgress());
+            try {
+                this.eoloPlantService.update(eoloPlant);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+    }
 
 }
