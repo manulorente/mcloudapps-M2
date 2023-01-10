@@ -23,4 +23,4 @@
 `java -jar planner\target\planner-0.0.1-SNAPSHOT.jar`  
 `java -jar server\target\server-0.0.1-SNAPSHOT.jar`  
 
-## The app will be served at http:\\localhost:8080\
+## The app will be served at `http:\\localhost:8080\`

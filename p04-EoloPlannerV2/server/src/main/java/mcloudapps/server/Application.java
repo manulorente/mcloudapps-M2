@@ -26,7 +26,7 @@ public class Application {
 	@Bean
 	public Consumer<EoloPlant> progressconsumer() {
 		return eoloPlant -> {
-			System.out.println("Progress: " + eoloPlant.getCity());
+			System.out.println("Progress: " + eoloPlant.getCity() + " " + eoloPlant.getProgress());
 			this.eoloPlantService.update(eoloPlant);
 		};
 	}

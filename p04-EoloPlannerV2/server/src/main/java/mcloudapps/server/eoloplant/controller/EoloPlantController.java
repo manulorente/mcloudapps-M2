@@ -10,6 +10,8 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SubscriptionMapping;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import org.reactivestreams.Publisher;
@@ -17,7 +19,6 @@ import org.reactivestreams.Publisher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import mcloudapps.server.eoloplant.model.EoloPlant;
-import mcloudapps.server.eoloplant.model.EoloPlantInput;
 import mcloudapps.server.eoloplant.service.EoloPlantService;
 
 @Controller
@@ -51,6 +52,7 @@ public class EoloPlantController {
         this.eoloPlantService.deleteById(id);
     }
 
+    /* 
     @SubscriptionMapping
     public Publisher<List<EoloPlant>> subscriptionEoloPlants() {
         return subscriber -> Executors.newScheduledThreadPool(1).scheduleAtFixedRate(() -> {
@@ -62,4 +64,5 @@ public class EoloPlantController {
     public Publisher<EoloPlant> subscriptionEoloPlant(@Argument Long id) {
         return eoloPlantService.subscriptionEoloPlant(id);
     }
+    */
 }

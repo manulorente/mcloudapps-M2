@@ -5,6 +5,9 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.springframework.cloud.stream.function.StreamBridge;
 
 import reactor.core.publisher.Flux;
@@ -12,9 +15,13 @@ import reactor.core.publisher.Sinks.Many;
 
 import mcloudapps.server.eoloplant.model.EoloPlant;
 import mcloudapps.server.eoloplant.repository.EoloPlantRepository;
+import mcloudapps.server.ws.WebSocketHandler;
 
 @Service
 public class EoloPlantService {
+
+    @Autowired
+    private WebSocketHandler webSocketHandler;
 
     @Autowired
     private Flux<EoloPlant> eoloPlantEvents;
@@ -32,13 +39,11 @@ public class EoloPlantService {
         return this.eoloPlants.findAll();
     }
 
-    public EoloPlant create(EoloPlant eoloPlant){
+    public EoloPlant create(EoloPlant eoloPlant) throws JsonProcessingException{
         this.eoloPlants.save(eoloPlant);
-        this.eoloPlantEvents.subscribe(e -> {
-            System.out.println("EoloPlant: " + e);
-            this.eoloPlantSink.tryEmitNext(e);
-        });
-        this.streamBridge.send("create", eoloPlant);
+        System.out.println("EoloPlant: " + eoloPlant.getCity());
+        this.eoloPlantSink.tryEmitNext(eoloPlant);
+        this.sendEoloPlant(eoloPlant);
         return eoloPlant;
     }
 
@@ -59,9 +64,13 @@ public class EoloPlantService {
         this.eoloPlantSink.tryEmitNext(eoloPlant);
         return eoloPlant;
     }
-
+    
     public Flux<EoloPlant> subscriptionEoloPlant(Long id) {
         return eoloPlantEvents
             .filter(e -> Objects.equals(e.getId(), id));
+    }
+
+    public void sendEoloPlant(EoloPlant eoloPlant) throws JsonProcessingException {
+        this.streamBridge.send("create", eoloPlant);
     }
 }

@@ -13,7 +13,7 @@
 
   <groupId>mcloudapps</groupId>
   <artifactId>planner</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>
 
   <name>planner</name>
 
@@ -23,7 +23,7 @@
     	<io.grpc.version>1.42.1</io.grpc.version>
 		<os-maven-plugin.version>1.6.2</os-maven-plugin.version>
 		<protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>		
-    <spring-cloud.version>2021.0.0</spring-cloud.version>
+    	<spring-cloud.version>2021.0.0</spring-cloud.version>
   </properties>
 	<dependencies>
         <dependency>
