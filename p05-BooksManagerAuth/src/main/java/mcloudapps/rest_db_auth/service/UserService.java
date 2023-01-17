@@ -40,9 +40,6 @@ public class UserService {
     public UserDTO save(UserCreateDTO userCreateDTO) {
         User user = userMapper.toDomain(userCreateDTO);
         return this.userMapper.toDTO(this.userRepository.save(user));
-        //User newUser = this.userMapper.toDomain(userCreateDTO);
-        //newUser.setRole(this.userRepository.findById(1L).orElseThrow().getRoles());
-        //return this.userMapper.toDTO(this.userRepository.save(newUser));
     }
 
     public Page<UserDTO> findAll(Pageable pageable) {

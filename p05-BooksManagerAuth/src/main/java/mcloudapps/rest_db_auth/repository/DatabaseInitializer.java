@@ -6,7 +6,6 @@ import mcloudapps.rest_db_auth.model.Comment;
 import mcloudapps.rest_db_auth.model.Eroles;
 import mcloudapps.rest_db_auth.model.Role;
 import mcloudapps.rest_db_auth.model.User;
-import mcloudapps.rest_db_auth.model.UserRole;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,14 +17,12 @@ public class DatabaseInitializer {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final UserRoleRepository userRoleRepository;
 
-    public DatabaseInitializer(BookRepository bookRepository, CommentRepository commentRepository, UserRepository userRepository, RoleRepository roleRepository, UserRoleRepository userRoleRepository, PasswordEncoder encoder) {
+    public DatabaseInitializer(BookRepository bookRepository, CommentRepository commentRepository, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
         this.bookRepository = bookRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.userRoleRepository = userRoleRepository;
         this.encoder = encoder;
     }
     @PostConstruct
@@ -66,9 +63,6 @@ public class DatabaseInitializer {
         user1.getRoles().add(role1);
         user2.getRoles().add(role2);
 
-        UserRole userRole1 = new UserRole(user1, role1);
-        UserRole userRole2 = new UserRole(user2, role2);
-
         this.bookRepository.save(book1);
         this.bookRepository.save(book2);
 
@@ -82,8 +76,5 @@ public class DatabaseInitializer {
 
         this.roleRepository.save(role1);
         this.roleRepository.save(role2);
-
-        this.userRoleRepository.save(userRole1);
-        this.userRoleRepository.save(userRole2);
     }
 }

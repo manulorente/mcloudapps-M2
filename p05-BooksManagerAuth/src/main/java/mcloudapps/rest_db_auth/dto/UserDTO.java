@@ -9,7 +9,6 @@ public record UserDTO(
     String username,
     String email,
     String password,
-    Role role,
     List<Role> roles
     ){
 }
