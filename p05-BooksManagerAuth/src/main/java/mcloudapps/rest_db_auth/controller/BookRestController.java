@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.net.URI;
 
 import jakarta.validation.Valid;
+import mcloudapps.rest_db_auth.dto.BookBasicDTO;
 import mcloudapps.rest_db_auth.dto.BookCreateDTO;
 import mcloudapps.rest_db_auth.dto.BookDTO;
 import mcloudapps.rest_db_auth.service.BookService;
@@ -40,24 +41,29 @@ public class BookRestController {
         this.bookService = bookService;
     }
 
-    @Operation(summary = "Get all books")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Get all books", content = {
+    @Operation(summary = "Get all books basic information")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Get all books basic information", content = {
+        @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BookBasicDTO.class))) }) })
+    @GetMapping("/basic")
+    public ResponseEntity<Page<?>> getBooksBasicView(Pageable pageable) {
+        return ResponseEntity.ok(this.bookService.findAllBasic(pageable));
+    }
+ 
+    @Operation(summary = "Get all books detailed information")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Get all books detailed information", content = {
         @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BookDTO.class))) }) })
     @GetMapping("/")
-    public ResponseEntity<Page<?>> getBooks(Pageable pageable, @RequestParam(required = false) String view) {
-        if ("basic".equals(view)) {
-            return ResponseEntity.ok(this.bookService.findAllBasic(pageable));
-        } else {
-            return ResponseEntity.ok(this.bookService.findAll(pageable));
-        }
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public ResponseEntity<Page<?>> getBooksFullView(Pageable pageable) {
+        return ResponseEntity.ok(this.bookService.findAll(pageable));
     }
+
     @Operation(summary = "Get a book by the id")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Get a book by id", content = {
         @Content(mediaType = "application/json", schema = @Schema(implementation = BookDTO.class)) }),
         @ApiResponse(responseCode = "400", description = "Invalid format id supplied", content = @Content),
         @ApiResponse(responseCode = "404", description = "Book not found", content = @Content) })
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<BookDTO> getBook(@PathVariable Long id) {
         return ResponseEntity.ok(this.bookService.findByIdDTO(id));
     }
@@ -81,6 +87,7 @@ public class BookRestController {
         @ApiResponse(responseCode = "400", description = "Invalid book attributes supplied", content = @Content),
         @ApiResponse(responseCode = "404", description = "Book not found", content = @Content) })
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<BookDTO> updateBook(@RequestBody BookCreateDTO newBook, @PathVariable Long id) {
         return ResponseEntity.ok(this.bookService.replace(newBook, id));
     }

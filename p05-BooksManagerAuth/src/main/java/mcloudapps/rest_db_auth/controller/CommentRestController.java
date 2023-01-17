@@ -78,6 +78,7 @@ public class CommentRestController {
         @ApiResponse(responseCode = "400", description = "Invalid comment attributes supplied", content = @Content),
         @ApiResponse(responseCode = "404", description = "Comment not found", content = @Content) })
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Long id, @Valid @RequestBody CommentCreateDTO commentCreateDTO) {
         return ResponseEntity.ok(this.commentService.replace(commentCreateDTO, id));
     }

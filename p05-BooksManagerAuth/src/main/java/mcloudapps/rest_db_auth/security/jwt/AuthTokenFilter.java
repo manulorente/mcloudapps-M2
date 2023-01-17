@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import mcloudapps.rest_db_auth.security.services.UserDetailsServiceImplementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 public class AuthTokenFilter extends OncePerRequestFilter{
-    @Autowired
-    private Environment enviroment;
   
     @Autowired
     private JwtUtils jwtUtils;
@@ -32,6 +29,7 @@ public class AuthTokenFilter extends OncePerRequestFilter{
         throws ServletException, IOException {
       try {
         String jwt = parseJwt(request);
+
         if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
           String username = jwtUtils.getUserNameFromJwtToken(jwt);
   
@@ -53,10 +51,10 @@ public class AuthTokenFilter extends OncePerRequestFilter{
     }
   
     private String parseJwt(HttpServletRequest request) {
-      String headerAuth = request.getHeader(enviroment.getProperty("Authorization"));
+      String headerAuth = request.getHeader("Authorization");
   
-      if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(enviroment.getProperty("Prefix"))) {
-        return headerAuth.substring(7);
+      if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+        return headerAuth.substring(7, headerAuth.length());
       }
   
       return null;

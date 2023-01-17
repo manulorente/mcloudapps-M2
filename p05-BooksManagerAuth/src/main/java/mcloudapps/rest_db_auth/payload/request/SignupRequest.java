@@ -1,6 +1,6 @@
 package mcloudapps.rest_db_auth.payload.request;
 
-import java.util.Set;
+import java.util.List;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -17,7 +17,7 @@ public class SignupRequest {
     @Email
     private String email;
 
-    private Set<String> roles;
+    private List<String> roles;
 
     @NotBlank
     @Size(min = 6, max = 40)
@@ -27,7 +27,7 @@ public class SignupRequest {
     }
 
     public SignupRequest(@NotBlank @Size(min = 3, max = 20) String username,
-            @NotBlank @Size(max = 50) @Email String email, Set<String> roles,
+            @NotBlank @Size(max = 50) @Email String email, List<String> roles,
             @NotBlank @Size(min = 6, max = 40) String password) {
         this.username = username;
         this.email = email;
@@ -51,14 +51,14 @@ public class SignupRequest {
         this.email = email;
     }
 
-    public Set<String> getRoles() {
+    public List<String> getRoles() {
         return this.roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
-
+    
     public String getPassword() {
         return this.password;
     }

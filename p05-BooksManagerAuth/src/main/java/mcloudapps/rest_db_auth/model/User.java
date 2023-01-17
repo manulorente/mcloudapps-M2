@@ -5,16 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
-        })
+@Table(name = "users")
 public class User {
     
     @Id
@@ -33,14 +29,12 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    @OneToMany(mappedBy = "username", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "username", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
@@ -71,7 +65,7 @@ public class User {
         return this.password;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return this.roles;
     }
 
@@ -91,7 +85,7 @@ public class User {
         this.password = password;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 

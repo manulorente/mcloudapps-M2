@@ -1,8 +1,7 @@
 package mcloudapps.rest_db_auth.controller;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,8 +82,8 @@ public class AuthController {
                   .body(new MessageResponse("Error: Email is already in use!"));
             }
         
-            Set<String> strRoles = signUpRequest.getRoles();
-            Set<Role> roles = new HashSet<>();       
+            List<String> strRoles = signUpRequest.getRoles();
+            List<Role> roles = new ArrayList<>();      
 
             if (strRoles == null) {
               Role userRole = this.roleService.findByName(Eroles.ROLE_USER);

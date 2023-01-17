@@ -1,6 +1,6 @@
 package mcloudapps.rest_db_auth.dto;
 
-import java.util.Set;
+import java.util.List;
 
 import mcloudapps.rest_db_auth.model.Role;
 
@@ -10,6 +10,6 @@ public record UserDTO(
     String email,
     String password,
     Role role,
-    Set<Role> roles
+    List<Role> roles
     ){
 }

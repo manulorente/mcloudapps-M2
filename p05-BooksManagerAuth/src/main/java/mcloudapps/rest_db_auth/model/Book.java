@@ -17,7 +17,7 @@ public class Book {
     private String publisher;
     private String date;
     
-    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     public Book() {

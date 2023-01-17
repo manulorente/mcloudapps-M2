@@ -11,9 +11,9 @@ public class Comment {
     private Long id;
     private String text;
     private int rating;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User username;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Book book;
 
     public Comment() {
