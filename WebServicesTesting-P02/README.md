@@ -34,6 +34,10 @@ https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the executi
 
 <https://www.artillery.io/docs/guides/getting-started/installing-artillery>
 
+### Run the app from cmd
+
+`java -jar -Dspring.profiles.active=dev target/practica_1_pruebas_ordinaria-0.0.1-SNAPSHOT.jar` 
+
 ### Run Artillery from PS
 
- `PS artillery run .\scripts\TestScript.yml`
+ `artillery run -o fail-report.json load-test.yml`

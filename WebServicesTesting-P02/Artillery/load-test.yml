@@ -1,0 +1,111 @@
+config:
+  target: "https://localhost:8443/api"
+  tls:
+    rejectUnauthorized: false
+  plugins:
+    expect: {}
+    ensure: {}
+  phases:
+    - duration: 1 # Duracion de la fase
+      arrivalRate: 1 # Numero de usuarios por segundo
+  #http:
+  #  pool: 5 # Numero de conexiones simultaneas
+  payload:
+    - path: "users.csv"
+      fields:
+        - "username"
+        - "password"
+      order: "sequence"
+  ensure:
+    thresholds:
+        - "http.codes.201": 51
+  variables:
+    adminUsername:
+      - "admin"
+    adminPassword:
+      - "pass"
+    OrganizerUsername:
+      - "Patxi"
+    OrganizerPassword:
+      - "pass"
+
+before:
+  flow:
+    - post:
+        log: "Creating event"
+        url: "/events/"
+        auth:
+          user: "{{OrganizerUsername}}"
+          pass: "{{OrganizerPassword}}"
+        json:
+          name: "Example"
+          description: "Example event"
+          date: "2020-11-22T19:00:00+0000"
+          price: "30"
+          max_capacity: "50"
+        capture:
+          json: "$.id"
+          as: "id"
+        expect:
+          statusCode: 201
+          contentType: json
+    - get:
+        log: "Getting created event"
+        url: "/events/{{id}}"
+        capture:
+          json: "$.id"
+          as: "idCreatedEvent"
+        expect:
+          - statusCode: 200
+          - contentType: json
+          - equals:
+              - "{{ id }}"
+              - "{{ idCreatedEvent }}"
+
+scenarios:
+  - flow:
+      - get:
+          log: User login"
+          url: "/logIn"
+          auth:
+            user: "{{username}}"
+            pass: "{{password}}"
+          expect:
+            - statusCode: 200
+            - contentType: json
+      - post:
+          log: "Creating new ticket"
+          url: "/tickets/"
+          qs:
+            eventId: "{{id}}"          
+          auth:
+            user: "{{username}}"
+            pass: "{{password}}"
+          expect:
+            - statusCode: 201
+            - contentType: json
+      - get:
+          log: User logout"
+          url: "/logOut"
+          auth:
+            user: "{{username}}"
+            pass: "{{password}}"
+          expect:
+            - statusCode: 200
+            - contentType: json
+                          
+after:
+  flow:
+    - delete:
+        log: "Deleting event"
+        url: "/events/{{ id }}"
+        auth:
+          user: "{{OrganizerUsername}}"
+          pass: "{{OrganizerPassword}}"
+        expect:
+          statusCode: 204
+    - get:
+        log: "Getting removed event"
+        url: "/events/{{ id }}"
+        expect:
+          statusCode: 404
