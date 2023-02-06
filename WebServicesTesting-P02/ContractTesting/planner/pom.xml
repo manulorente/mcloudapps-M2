@@ -22,13 +22,35 @@
 		<io.grpc.version>1.25.0</io.grpc.version>
 		<os-maven-plugin.version>1.6.2</os-maven-plugin.version>
 		<protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
+		<pact.version>4.2.10</pact.version>
+		<pact.pacts.file>PlannerConsumer-TopoProvider.json</pact.pacts.file>
 	</properties>
 
 	<dependencies>
 
+        <dependency>
+            <groupId>au.com.dius.pact.consumer</groupId>
+            <artifactId>junit5</artifactId>
+            <version>${pact.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>1.3</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>3.0.2</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -99,14 +121,19 @@
 						io.grpc:protoc-gen-grpc-java:1.25.0:exe:${os.detected.classifier}
 					</pluginArtifact>
 				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>compile-custom</goal>
-						</goals>
-					</execution>
-				</executions>
+                <executions>
+                    <execution>
+                        <id>copy-file</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <sourceFile>target/pacts/${pact.pacts.file}</sourceFile>
+                            <destinationFile>../../ContractTesting/Pacts/${pact.pacts.file}</destinationFile>
+                        </configuration>
+                    </execution>
+                </executions>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

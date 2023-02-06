@@ -13,6 +13,12 @@ public class TopoClient {
     private static final String TOPO_HOST = "localhost";
     private static final int TOPO_PORT = 8080;
 
+    private final RestTemplate restTemplate;
+
+    public TopoClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+    
     @Async
     public CompletableFuture<String> getLandscape(String city) {
         
