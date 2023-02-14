@@ -1,5 +1,6 @@
 package mcloudapps.airport.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +18,6 @@ public interface AirportRepository extends JpaRepository<Airport, Long>{
             + "AND DATE_FORMAT(f.departureDateTime, '%Y-%m-%d') = :departureDateTime "
             + "AND f.departureAirport.id = a.id "
             + "ORDER BY f.departureDateTime")
-    List <FlightByOriginDTO> findAllFlightsGivenCityAndDateOrderedByDepartureTime(@Param("city") String city, @Param("departureDateTime") String departureDateTime);
+    List <FlightByOriginDTO> findAllFlightsGivenCityAndDateOrderedByDepartureTime(@Param("city") String city, @Param("departureDateTime") LocalDate departureDateTime);
 
 }

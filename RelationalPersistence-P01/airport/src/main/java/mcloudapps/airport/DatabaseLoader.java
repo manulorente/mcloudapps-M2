@@ -2,6 +2,7 @@ package mcloudapps.airport;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 
+import mcloudapps.airport.dto.FlightByOriginDTO;
 import mcloudapps.airport.entity.Airport;
 import mcloudapps.airport.entity.CrewMember;
 import mcloudapps.airport.entity.Education;
@@ -66,16 +68,26 @@ public class DatabaseLoader implements CommandLineRunner {
 
     private void launchQueries() {
         findTechnicians();
+        findFlightsOrderedByHour();
         findCrewMembersDepartureDataByEmployeeCode();
         findNumberOfHoursAndFlightsPerCrewMember();
-        findFlightsOrderedByHour();
     }
 
-    private void findNumberOfHoursAndFlightsPerCrewMember() {
+    private void findTechnicians() {
         System.out.println("--------------------------------------------------------------------------------");
-        System.out.println("Query 4: Find number of hours and flights per crew member");
+        System.out.println("Query 1: Find technicians per plane");
         System.out.println("--------------------------------------------------------------------------------");
-        this.flightCrewMemberRepository.findAllCrewMembersNumberOfHoursAndFlights().stream().forEach(System.out::println);
+        this.planeRepository.findAllPlanesByTechnicianAndOverhaul().stream().forEach(System.out::println);
+    }
+
+    private void findFlightsOrderedByHour() {
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("Query 2: Find flights ordered by hour");
+        System.out.println("--------------------------------------------------------------------------------");
+        List<FlightByOriginDTO> flightsOrderedByHour = this.airportRepository.findAllFlightsGivenCityAndDateOrderedByDepartureTime("London", LocalDate.of(2019, Month.DECEMBER, 27));
+        for (FlightByOriginDTO flight : flightsOrderedByHour) {
+            System.out.println(flight.toString());
+        }
     }
 
     private void findCrewMembersDepartureDataByEmployeeCode() {
@@ -86,19 +98,11 @@ public class DatabaseLoader implements CommandLineRunner {
         .stream().forEach(System.out::println);
     }
 
-    private void findFlightsOrderedByHour() {
+    private void findNumberOfHoursAndFlightsPerCrewMember() {
         System.out.println("--------------------------------------------------------------------------------");
-        System.out.println("Query 2: Find flights ordered by hour");
+        System.out.println("Query 4: Find number of hours and flights per crew member");
         System.out.println("--------------------------------------------------------------------------------");
-        this.airportRepository.findAllFlightsGivenCityAndDateOrderedByDepartureTime("London", "2019-12-27")
-        .stream().forEach(System.out::println);
-    }
-
-    private void findTechnicians() {
-        System.out.println("--------------------------------------------------------------------------------");
-        System.out.println("Query 1: Find technicians per plane");
-        System.out.println("--------------------------------------------------------------------------------");
-        this.planeRepository.findAllPlanesByTechnicianAndOverhaul().stream().forEach(System.out::println);
+        //this.flightCrewMemberRepository.findAllCrewMembersNumberOfHoursAndFlights().stream().forEach(System.out::println);
     }
 
     private void populateDatabase() {
@@ -169,16 +173,21 @@ public class DatabaseLoader implements CommandLineRunner {
         this.crewMemberRepository.save(crewMember3);
         this.crewMemberRepository.save(crewMember4);
 
-        String departureTime1 = "2019-12-27 10:00:00";
-        String arrivalTime1 = "2019-12-27 12:00:00";
+        LocalDateTime departureTime1 = LocalDateTime.of(2019, Month.DECEMBER, 27, 10, 00);
+        LocalDateTime arrivalTime1 = LocalDateTime.of(2019, Month.DECEMBER, 27, 12, 00);
 
-        String departureTime2 = "2019-12-27 12:00:00";
-        String arrivalTime2 = "2019-12-27 14:00:00";
+        LocalDateTime departureTime2 = LocalDateTime.of(2019, Month.DECEMBER, 27, 12, 00);
+        LocalDateTime arrivalTime2 = LocalDateTime.of(2019, Month.DECEMBER, 27, 14, 00);
+
+        LocalDateTime departureTime3 = LocalDateTime.of(2019, Month.DECEMBER, 27, 18, 00);
+        LocalDateTime arrivalTime3 = LocalDateTime.of(2019, Month.DECEMBER, 27, 20, 00);
 
         Flight flight1 = new Flight("VY2256", "Vueling", airport3, airport4, departureTime1, arrivalTime1, new BigDecimal(2), plane1);
         Flight flight2 = new Flight("FR6589", "Ryanair", airport1, airport2, departureTime2, arrivalTime2, new BigDecimal(2), plane1);
+        Flight flight3 = new Flight("TP1234", "TAP Portugal", airport3, airport4, departureTime3, arrivalTime3, new BigDecimal(2), plane2);
         this.flightRepository.save(flight1);
         this.flightRepository.save(flight2);
+        this.flightRepository.save(flight3);
         
         List<FlightCrewMember> flightCrewMemberList1 = new ArrayList<>();
         flightCrewMemberList1.add(new FlightCrewMember(flight1, crewMember1));
@@ -202,13 +211,13 @@ public class DatabaseLoader implements CommandLineRunner {
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("DELETING DATABASE");
         System.out.println("--------------------------------------------------------------------------------");
-        this.airportRepository.deleteAll();
-        this.crewMemberRepository.deleteAll();
-        this.planeRepository.deleteAll();
-        this.flightRepository.deleteAll();
+        this.flightCrewMemberRepository.deleteAll();        
         this.overhaulRepository.deleteAll();
+        this.crewMemberRepository.deleteAll();
         this.technicianRepository.deleteAll();
-        this.flightCrewMemberRepository.deleteAll();
+        this.flightRepository.deleteAll();
+        this.airportRepository.deleteAll();
+        this.planeRepository.deleteAll();
     }
 }
     

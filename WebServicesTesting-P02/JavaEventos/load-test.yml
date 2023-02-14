@@ -6,10 +6,10 @@ config:
     expect: {}
     ensure: {}
   phases:
-    - duration: 1 # Duracion de la fase
-      arrivalRate: 1 # Numero de usuarios por segundo
-  #http:
-  #  pool: 5 # Numero de conexiones simultaneas
+    - duration: 1 
+      arrivalRate: 1
+  http:
+    pool: 5
   payload:
     - path: "users.csv"
       fields:
@@ -41,11 +41,11 @@ before:
           name: "Example"
           description: "Example event"
           date: "2020-11-22T19:00:00+0000"
-          price: "30"
-          max_capacity: "50"
+          price: 30.00
+          max_capacity: 50
         capture:
           json: "$.id"
-          as: "id"
+          as: "id"  
         expect:
           statusCode: 201
           contentType: json

@@ -61,4 +61,15 @@ public class FlightByOriginDTO {
         this.originCity = originCity;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+            " code='" + getCode() + "'" +
+            ", company='" + getCompany() + "'" +
+            ", departureDateTime='" + getDepartureDateTime() + "'" +
+            ", originAirport='" + getOriginAirport() + "'" +
+            ", originCity='" + getOriginCity() + "'" +
+            "}";
+    }
+
 }

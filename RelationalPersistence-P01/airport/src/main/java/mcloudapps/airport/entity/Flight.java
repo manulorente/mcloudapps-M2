@@ -1,6 +1,7 @@
 package mcloudapps.airport.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +30,10 @@ public class Flight {
     private String company;
 
     @Column(name = "departure_datetime")
-    private String departureDateTime;
+    private LocalDateTime departureDateTime;
 
     @Column(name = "arrival_time")
-    private String arrivalTime;
+    private LocalDateTime arrivalTime;
 
     @Column(name = "flight_duration")
 	private BigDecimal flightDuration;
@@ -52,8 +53,8 @@ public class Flight {
     public Flight() {
     }
 
-    public Flight(String flightCode, String company, Airport departureAirport, Airport arrivalAirport, String departureTime,
-            String arrivalTime, BigDecimal flightDuration, Plane plane) {
+    public Flight(String flightCode, String company, Airport departureAirport, Airport arrivalAirport, LocalDateTime departureTime,
+            LocalDateTime arrivalTime, BigDecimal flightDuration, Plane plane) {
         this.flightCode = flightCode;
         this.company = company;
         this.departureAirport = departureAirport;
@@ -104,19 +105,19 @@ public class Flight {
         this.arrivalAirport = arrivalAirport;
     }
 
-    public String getDepartureDateTime() {
+    public LocalDateTime getDepartureDateTime() {
         return this.departureDateTime;
     }
 
-    public void setDepartureDateTime(String departureTime) {
+    public void setDepartureDateTime(LocalDateTime departureTime) {
         this.departureDateTime = departureTime;
     }
 
-    public String getArrivalTime() {
+    public LocalDateTime getArrivalTime() {
         return this.arrivalTime;
     }
 
-    public void setArrivalTime(String arrivalTime) {
+    public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 

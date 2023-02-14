@@ -1,19 +1,21 @@
 package mcloudapps.airport.dto;
 
+import java.time.LocalDateTime;
+
 public class NameSurnameCrewMemberAndDepartureDateTimeCityByEmployeeCodeDTO {
     
     private String name;
 
     private String surname;
 
-    private String departureDateTime;
+    private LocalDateTime departureDateTime;
 
     private String city;
 
     public NameSurnameCrewMemberAndDepartureDateTimeCityByEmployeeCodeDTO() {
     }
 
-    public NameSurnameCrewMemberAndDepartureDateTimeCityByEmployeeCodeDTO(String name, String surname, String departureDateTime, String city) {
+    public NameSurnameCrewMemberAndDepartureDateTimeCityByEmployeeCodeDTO(String name, String surname, LocalDateTime departureDateTime, String city) {
         this.name = name;
         this.surname = surname;
         this.departureDateTime = departureDateTime;
@@ -36,11 +38,11 @@ public class NameSurnameCrewMemberAndDepartureDateTimeCityByEmployeeCodeDTO {
         this.surname = surname;
     }
 
-    public String getDepartureDateTime() {
+    public LocalDateTime getDepartureDateTime() {
         return this.departureDateTime;
     }
 
-    public void setDepartureDateTime(String departureDateTime) {
+    public void setDepartureDateTime(LocalDateTime departureDateTime) {
         this.departureDateTime = departureDateTime;
     }
 
