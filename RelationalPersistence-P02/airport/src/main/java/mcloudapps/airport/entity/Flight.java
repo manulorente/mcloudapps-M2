@@ -132,6 +132,7 @@ public class Flight {
         this.flightDuration = flightDuration;
     }
 
+
     @Override
     public String toString() {
         return "{" +

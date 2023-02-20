@@ -25,5 +25,14 @@ public interface CrewMemberRepository extends JpaRepository<CrewMember, Long> {
             + "GROUP BY c.name, c.surname " 
             + "ORDER BY 3")
     List<CrewMemberFlightDTO> findAllCrewMembersNumberOfHoursAndFlights();
-    
+
+        @Query(value = "SELECT c.name AS crewMemberName, c.surname AS crewMemberSurname, COUNT(f.id) AS numberOfFlights, SUM(f.flight_duration) AS numberOfHours "
+                + "FROM test.crew_member c, test.flight f, test.flight_crew_member fcm "
+                + "WHERE fcm.flight_id = f.id "
+                + "AND fcm.crew_member_id = c.id "
+                + "GROUP BY c.name, c.surname "
+                + "ORDER BY 3",
+                nativeQuery = true)
+        List<Object> findAllCrewMembersStatisticsJson();
+        
 }

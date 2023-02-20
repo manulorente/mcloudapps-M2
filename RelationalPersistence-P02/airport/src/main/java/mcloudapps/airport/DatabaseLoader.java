@@ -2,6 +2,8 @@ package mcloudapps.airport;
 
 import java.text.ParseException;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
@@ -54,6 +56,8 @@ public class DatabaseLoader implements CommandLineRunner {
         findFlightsOrderedByHour();
         findCrewMembersDepartureDataByEmployeeCode();
         findNumberOfHoursAndFlightsPerCrewMember();
+        findTechniciansPerPlaneJson();
+        findCrewMembersStatisticsJson();
         findAllProvincesData();
         findAllAndCountProvinces();
     }
@@ -88,16 +92,39 @@ public class DatabaseLoader implements CommandLineRunner {
         this.crewMemberRepository.findAllCrewMembersNumberOfHoursAndFlights().stream().forEach(System.out::println);
     }
 
+    private void findTechniciansPerPlaneJson() {
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("Query 5: Find technicians per plane (JSON)");
+        System.out.println("--------------------------------------------------------------------------------");
+        List<Object> list = this.planeRepository.findAllPlanesByTechnicianAndOverhaulJson();
+        for (Object object : list) {
+            Object[] array = (Object[]) object;
+            System.out.println("Plate: " + array[0] + " - Technician: " + array[1] + " " + array[2]);
+        }
+    }
+
+    private void findCrewMembersStatisticsJson() {
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("Query 6: Find crew members statistics (JSON)");
+        System.out.println("--------------------------------------------------------------------------------");
+        List<Object> list = this.crewMemberRepository.findAllCrewMembersStatisticsJson();
+        for (Object object : list) {
+            Object[] array = (Object[]) object;
+            System.out.println("Employee code: " + array[0] + " " + array[1] + " - Number of flights: " + array[2] + " - Number of hours: " + array[3]);
+        }
+        
+    }
+
     private void findAllProvincesData() {
         System.out.println("--------------------------------------------------------------------------------");
-        System.out.println("Query 5: Find all provinces data");
+        System.out.println("Query 7: Find all provinces data");
         System.out.println("--------------------------------------------------------------------------------");
         this.provinceRepository.findAll().stream().forEach(System.out::println);
     }
 
     private void findAllAndCountProvinces() {
         System.out.println("--------------------------------------------------------------------------------");
-        System.out.println("Query 6: Find all and count provinces");
+        System.out.println("Query 8: Find and count all provinces");
         System.out.println("--------------------------------------------------------------------------------");
         this.provinceRepository.findAllAndCountProvinces().stream().forEach(System.out::println);
     }

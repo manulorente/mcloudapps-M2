@@ -32,6 +32,8 @@ public class Plane {
     @OneToMany(mappedBy = "plane")
     private List<Overhaul> overhauls = new ArrayList<>();
 
+    private String overhaulsJson;
+
     public Plane() {
     }
 
@@ -82,15 +84,26 @@ public class Plane {
         this.numberOfFlightHours = numberOfFlightHours;
     }
 
+    public List<Overhaul> getOverhauls() {
+        return this.overhauls;
+    }
+
+    public void setOverhauls(List<Overhaul> overhauls) {
+        this.overhauls = overhauls;
+    }
+
+    public String getOverhaulsJson() {
+        return this.overhaulsJson;
+    }
+
+    public void setOverhaulsJson(String overhaulsJson) {
+        this.overhaulsJson = overhaulsJson;
+    }
+
     @Override
     public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", plate='" + getPlate() + "'" +
-            ", manufacturer='" + getManufacturer() + "'" +
-            ", model='" + getModel() + "'" +
-            ", numberOfFlightHours='" + getNumberOfFlightHours() + "'" +
-            "}";
+        return "{" + " id='" + getId() + "'" + ", plate='" + getPlate() + "'" + ", manufacturer='" + getManufacturer() + "'"
+                + ", model='" + getModel() + "'" + ", numberOfFlightHours='" + getNumberOfFlightHours() + "'" + "}";
     }
 
 }

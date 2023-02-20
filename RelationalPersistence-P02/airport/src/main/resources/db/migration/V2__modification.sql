@@ -1,7 +1,6 @@
-ALTER TABLE test.plane ADD COLUMN (overhauljson JSON);
-ALTER TABLE test.flight ADD COLUMN (crewmemberjson JSON);
+ALTER TABLE `plane` ADD COLUMN (overhauls_json JSON);
 
-UPDATE test.plane p SET p.overhauljson = (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', o.id
+UPDATE `plane` p SET p.overhauls_json = (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', o.id,
                                                                             'start_date', o.start_date,
                                                                             'end_date', o.end_date,
                                                                             'duration', o.duration,
@@ -9,10 +8,13 @@ UPDATE test.plane p SET p.overhauljson = (SELECT JSON_ARRAYAGG(JSON_OBJECT('id',
                                                                             'overhaul_description', o.overhaul_description,
                                                                             'plane_id', o.plane_id,
                                                                             'technician_id', o.technician_id,
-                                                                            'airport_id', o.airport_id)
+                                                                            'airport_id', o.airport_id))
                                             FROM test.overhaul o 
-                                            WHERE o.planeid = p.id);
-UPDATE test.flight f SET f.crewmemberjson = (SELECT JSON_ARRAYAGG(id) AS crewmembers
-                                                FROM test.crewmember c, test.flightcrewmember fcm
-                                                WHERE c.id = fcm.crewmemberid AND fcm.flightid = f.id)
+                                            WHERE p.id= o.plane_id);
+
+ALTER TABLE `flight` ADD COLUMN (crewmember_json JSON);
+
+UPDATE `flight` f SET f.crewmember_json = (SELECT JSON_ARRAYAGG(id) AS crewmembers
+                                                FROM test.crew_member c, test.flight_crew_member fcm
+                                                WHERE c.id = fcm.crew_member_id AND fcm.flight_id = f.id
                                                 GROUP BY f.id);
