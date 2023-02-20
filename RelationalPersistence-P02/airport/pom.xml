@@ -12,7 +12,7 @@
     <artifactId>persistence</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>persistence</name>
-    <description>Relational persistence app to manage an airport service</description>
+    <description>Relational persistence app to manage an airport service + Flyway + MongoDB</description>
     <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
