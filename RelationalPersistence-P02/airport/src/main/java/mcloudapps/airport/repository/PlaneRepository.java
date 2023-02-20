@@ -14,5 +14,6 @@ public interface PlaneRepository extends JpaRepository<Plane, Long>{
             + "FROM Overhaul o "
             + "JOIN Plane p on p.id = o.plane.id "
             + "JOIN Technician t on t.id = o.technician.id ")
-    List <PlaneOverhaulDTO> findAllPlanesByTechnicianAndOverhaul();
+    List<PlaneOverhaulDTO> findAllPlanesByTechnicianAndOverhaul();
+
 }

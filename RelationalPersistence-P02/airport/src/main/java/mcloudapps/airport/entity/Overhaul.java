@@ -16,7 +16,7 @@ public class Overhaul {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "begin_date")
+    @Column(name = "start_date")
     private Date startDate;
 
     @Column(name = "end_date")
