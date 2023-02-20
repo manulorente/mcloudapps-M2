@@ -12,6 +12,7 @@ import mcloudapps.airport.repository.FlightRepository;
 import mcloudapps.airport.repository.OverhaulRepository;
 import mcloudapps.airport.repository.PlaneRepository;
 import mcloudapps.airport.repository.TechnicianRepository;
+import mcloudapps.airport.repository.ProvinceRepository;
 
 @Controller
 public class DatabaseLoader implements CommandLineRunner {
@@ -34,6 +35,9 @@ public class DatabaseLoader implements CommandLineRunner {
     @Autowired
     private TechnicianRepository technicianRepository;
 
+    @Autowired
+    private ProvinceRepository provinceRepository;
+
     @Override
     public void run(String... args) throws Exception {
         try {
@@ -50,6 +54,8 @@ public class DatabaseLoader implements CommandLineRunner {
         findFlightsOrderedByHour();
         findCrewMembersDepartureDataByEmployeeCode();
         findNumberOfHoursAndFlightsPerCrewMember();
+        findAllProvincesData();
+        findAllAndCountProvinces();
     }
 
     private void findTechnicians() {
@@ -63,7 +69,8 @@ public class DatabaseLoader implements CommandLineRunner {
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("Query 2: Find flights ordered by hour");
         System.out.println("--------------------------------------------------------------------------------");
-        this.flightRepository.findAllFlightsGivenCityAndDateOrderedByDepartureTime("London", "27/12/2019").stream().forEach(System.out::println);
+        this.flightRepository.findAllFlightsGivenCityAndDateOrderedByDepartureTime("London", "27/12/2019")
+        .stream().forEach(System.out::println);
     }
 
     private void findCrewMembersDepartureDataByEmployeeCode() {
@@ -79,6 +86,20 @@ public class DatabaseLoader implements CommandLineRunner {
         System.out.println("Query 4: Find number of hours and flights per crew member");
         System.out.println("--------------------------------------------------------------------------------");
         this.crewMemberRepository.findAllCrewMembersNumberOfHoursAndFlights().stream().forEach(System.out::println);
+    }
+
+    private void findAllProvincesData() {
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("Query 5: Find all provinces data");
+        System.out.println("--------------------------------------------------------------------------------");
+        this.provinceRepository.findAll().stream().forEach(System.out::println);
+    }
+
+    private void findAllAndCountProvinces() {
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("Query 6: Find all and count provinces");
+        System.out.println("--------------------------------------------------------------------------------");
+        this.provinceRepository.findAllAndCountProvinces().stream().forEach(System.out::println);
     }
 
     private void printDatabase(){
