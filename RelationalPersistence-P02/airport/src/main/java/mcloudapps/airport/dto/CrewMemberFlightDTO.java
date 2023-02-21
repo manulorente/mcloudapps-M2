@@ -7,9 +7,9 @@ public class CrewMemberFlightDTO {
 
     private String surname;
 
-    private double sumFlightHours;
-
     private Long numberOfFlights;
+
+    private double sumFlightHours;
 
     public CrewMemberFlightDTO(String name, String surname, Long numberOfFlights, double sumFlightHours) {
         this.name = name;

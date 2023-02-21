@@ -107,12 +107,11 @@ public class DatabaseLoader implements CommandLineRunner {
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("Query 6: Find crew members statistics (JSON)");
         System.out.println("--------------------------------------------------------------------------------");
-        List<Object> list = this.crewMemberRepository.findAllCrewMembersStatisticsJson();
+        List<Object> list = this.crewMemberRepository.findAllCrewMembersNumberOfHoursAndFlightsJson();
         for (Object object : list) {
             Object[] array = (Object[]) object;
             System.out.println("Employee code: " + array[0] + " " + array[1] + " - Number of flights: " + array[2] + " - Number of hours: " + array[3]);
         }
-        
     }
 
     private void findAllProvincesData() {
